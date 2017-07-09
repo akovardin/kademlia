@@ -18,4 +18,4 @@ result &{b10dc9bf98ca9648ff5fcc851692c525cc5b7aeb 127.0.0.1:3000}
 
 Пример как работает поиск
 
-![](https://photos-5.dropbox.com/t/2/AACTI4dUbVns06VsNu0bW60RW1-npnVRlYfaOm0nNR18Kg/12/750049/png/32x32/3/1499641200/0/2/kademlia.png/ENaoXhjnoLvbBCACKAI/cJBB_ujbysab_RbYtbjY8ciRXDkjndJXcFsdr_Q1Nek?dl=0&size=1600x1200&size_mode=3)
+![](https://photos-6.dropbox.com/t/2/AADnMbV-_xbbiQhAZlYENq27kW796UK7J_3YFvo-L0JPeA/12/750049/png/32x32/3/1499641200/0/2/kademlia.png/ENaoXhjpoLvbBCACKAI/YXczWDu4JjtF-sgMkQUhDQfIG8Xsjej7tvReIDZC_Wc?dl=0&size=1600x1200&size_mode=3)
