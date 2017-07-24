@@ -18,4 +18,4 @@ result &{b10dc9bf98ca9648ff5fcc851692c525cc5b7aeb 127.0.0.1:3000}
 
 Пример как работает поиск
 
-![](kademlia.png)
+![](screen-kademlia.png)
