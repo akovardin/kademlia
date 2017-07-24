@@ -2,7 +2,6 @@ package kademlia
 
 import (
 	"container/list"
-	"fmt"
 )
 
 const BucketSize = 20
@@ -30,8 +29,6 @@ func NewRoutingTable(contact Contact) *RoutingTable {
 func (table *RoutingTable) Update(contact Contact) {
 	prefix := contact.Node.Xor(table.contact.Node).PrefixLen()
 
-	fmt.Println("prefix", prefix)
-
 	bucket := table.buckets[prefix]
 
 	var element *list.Element
@@ -45,7 +42,7 @@ func (table *RoutingTable) Update(contact Contact) {
 		if bucket.Len() <= BucketSize {
 			bucket.PushFront(contact)
 		}
-		// TODO: Handle insertion when the list is full by evicting old elements if
+		// todo: Handle insertion when the list is full by evicting old elements if
 		// they don't respond to a ping.
 	} else {
 		bucket.MoveToFront(element)
