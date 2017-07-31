@@ -26,14 +26,14 @@ func NewRoutingTable(contact Contact) *RoutingTable {
 	return table
 }
 
-func (table *RoutingTable) Update(contact Contact) {
-	prefix := contact.Node.Xor(table.contact.Node).PrefixLen()
+func (t *RoutingTable) Update(contact Contact) {
+	prefix := contact.Node.Xor(t.contact.Node).PrefixLen()
 
-	bucket := table.buckets[prefix]
+	bucket := t.buckets[prefix]
 
 	var element *list.Element
 	for e := bucket.Front(); e != nil; e = e.Next() {
-		if e.Value.(Contact).Node.Equals(table.contact.Node) {
+		if e.Value.(Contact).Node.Equals(t.contact.Node) {
 			element = e
 		}
 	}
@@ -49,12 +49,12 @@ func (table *RoutingTable) Update(contact Contact) {
 	}
 }
 
-func (table *RoutingTable) FindClosest(target Node, count int) []Contact {
-	prefix := target.Xor(table.contact.Node).PrefixLen()
+func (t *RoutingTable) FindClosest(target Node, count int) []Contact {
+	prefix := target.Xor(t.contact.Node).PrefixLen()
 	contacts := []Contact{}
 
 	for i := prefix; i >= 0; i-- {
-		elt := table.buckets[i].Front()
+		elt := t.buckets[i].Front()
 		for elt != nil {
 			if len(contacts) < BucketSize {
 				contacts = append(contacts, elt.Value.(Contact))
@@ -66,7 +66,7 @@ func (table *RoutingTable) FindClosest(target Node, count int) []Contact {
 	}
 
 	for i := prefix + 1; i < NodeLength; i++ {
-		elt := table.buckets[i].Front()
+		elt := t.buckets[i].Front()
 		for elt != nil {
 			if len(contacts) < BucketSize {
 				contacts = append(contacts, elt.Value.(Contact))
@@ -79,6 +79,21 @@ func (table *RoutingTable) FindClosest(target Node, count int) []Contact {
 
 	if len(contacts) > count {
 		contacts = contacts[:count]
+	}
+
+	return contacts
+}
+
+// special debug method
+func (t *RoutingTable) List() []Contact {
+	contacts := []Contact{}
+
+	for _, bucket := range t.buckets {
+		elt := bucket.Front()
+		for elt != nil {
+			contacts = append(contacts, elt.Value.(Contact))
+			elt = elt.Next()
+		}
 	}
 
 	return contacts

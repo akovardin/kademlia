@@ -1,62 +1,55 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
-	"strings"
+	"os"
 
 	"github.com/horechek/kademlia"
 )
 
 var (
-	address  = flag.String("address", "127.0.0.1:3000", "address")
-	neighbor = flag.String("neighbor", "", "id/address:port")
+	address = flag.String("address", "127.0.0.1:3000", "address")
 )
 
 func main() {
 	flag.Parse()
 
 	node := kademlia.NewRandomNode()
-	log.Println("node id:", node)
+	fmt.Println("node id:", node)
 
 	k := kademlia.NewKademlia(kademlia.Contact{
 		Node:    node,
 		Address: *address,
 	})
 
-	parts := strings.Split(*neighbor, "/")
-
-	// @todo: move to flag parsing
-	if len(parts) != 2 {
-		log.Fatalln("undefined neighbor")
-	}
-
-	id := parts[0]
-	addr := parts[1]
-
-	k.Routes.Update(kademlia.Contact{
-		Node:    kademlia.NewNode(id),
-		Address: addr,
-	})
-
 	go k.Handle()
 
-	loop(k)
+	repl(k)
 }
 
-func loop(k *kademlia.Kademlia) {
-	var input string
+func repl(k *kademlia.Kademlia) {
+	bio := bufio.NewReader(os.Stdin)
 
 	for {
+		// @todo: use one variant for all io
 		fmt.Print("> ")
-		if _, err := fmt.Scan(&input); err != nil {
+		input, _, err := bio.ReadLine()
+		if err != nil {
 			log.Println("scan error:", err)
 			continue
 		}
 
-		fmt.Println(input)
+		c, err := parse(string(input))
+		if err != nil {
+			log.Println("execute err:", err)
+			continue
+		}
 
-		// parse commands, find in examples
+		if err := c.execute(k); err != nil {
+			log.Println("execute err:", err)
+		}
 	}
 }
